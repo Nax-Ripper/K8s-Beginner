@@ -76,6 +76,7 @@ kubectl version --client
 ```bash
 kubectl run [image_name/pod_name] --image=[docker_image]
 ```
+--no-vtx-check
 
 eg:
 
@@ -141,6 +142,12 @@ eg:
  kubectl delete pod apache
 ```
 
+- to delete all resources
+
+```bash
+kubectl delete all --all
+```
+
 ## Deployment
 
 ![Alt text](image-11.png)
@@ -187,7 +194,7 @@ eg:
 kubectl scale deployment nginx-deploy --replicas=5
 ```
 
-- to expose port
+- to expose port (cant access external)
 
 ```bash
 kubectl expose deployment [deploy_name] --port=[host_port_num] --target-port=[container_port_num] 
@@ -199,12 +206,35 @@ eg:
 kubectl expose deployment nginx-deploy --port=8080 --target-port=80
 ```
 
+- to export port (can access external)
+  - This can be access using node ip address and its generated port number
+
+```bash
+kubectl expose deployment [deploy_name] --type=NodePort --port=[container_port_num]
+```
+
+- to export port using loadBalancer
+
+```bash
+kubectl expose deployment [deploy_name] --type=LoadBalancer --port=[container_port_num]
+```
+
 - to delete deployment
 
 ```bash
 kubectl delete deployment [deploy_name]
 ```
 
+- to set new image to the deployment
+  - The container name can be found at :
+
+```bash
+kubectl describe [deploy_name]
+```
+
+```bash
+kubectl set image deployment [deploy_name] [container_name]=[image_name]
+```
 ## Service
 
 ![Alt text](image-12.png)
@@ -254,4 +284,16 @@ minikube ssh
 
 ## YAML in K8s
 
-![Alt text](image-9.png)
+- to apply yaml file
+
+```bash
+kubectl apply -f [xyz.yaml]
+```
+
+- to delete yaml file
+
+```bash
+kubectl delete -f [xyz.yaml]
+```
+
+<!-- ![Alt text](image-9.png) -->
